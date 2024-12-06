@@ -1,0 +1,11 @@
+*.*
+*
+!*/
+!.gitignore
+!Makefile
+!README.md
+!*.cpp
+!*.sh
+!*.[cSh]
+
+/build/
