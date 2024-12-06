@@ -2,9 +2,16 @@
 CC = g++
 CXXFLAGS = -Wextra -Wall -Werror -MMD -MP
 
+DUMPFLAGS = -D
+
 ifdef DEBUG
-	CXXFLAGS += -O0 -g
-else
+	CXXFLAGS += -ggdb
+	DUMPFLAGS += -S
+endif
+
+ifdef NOO
+	CXXFLAGS += -O0
+else 
 	CXXFLAGS += -O2
 endif
 
@@ -13,6 +20,8 @@ SRCS ?= $(shell find $(SRC_DIR) -name "*.cpp")
 
 BUILD_DIR = $(abspath ./build)
 OBJ_DIR = $(BUILD_DIR)/obj_dir
+
+OBJDUMP = $(BUILD_DIR)/objdump.txt
 
 $(shell mkdir -p $(OBJ_DIR))
 
@@ -29,6 +38,10 @@ $(BIN): $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CXXFLAGS) -c -o $@ $<
+
+dump: $(BIN)
+	objdump $(DUMPFLAGS) $(BIN) > $(OBJDUMP)
+
 
 ###############################################################################
 
