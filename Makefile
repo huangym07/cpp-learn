@@ -1,6 +1,8 @@
 # compilation configure
-CC = g++
-CXXFLAGS = -Wextra -Wall -Werror -MMD -MP
+CC = clang++
+STDCPP ?= -std=c++17
+
+CXXFLAGS = $(STDCPP) -Wextra -Wall -Werror -MMD -MP
 
 DUMPFLAGS = -D
 
