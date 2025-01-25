@@ -1,53 +1,40 @@
-# compilation configure
-CC = clang++
-STDCPP ?= -std=c++17
+# Some common configs for submodule.
 
-CXXFLAGS = $(STDCPP) -Wextra -Wall -Werror -MMD -MP
 
-DUMPFLAGS = -D
+# Compiler
+CC = g++
 
-ifdef DEBUG
-	CXXFLAGS += -ggdb
-	DUMPFLAGS += -S
-endif
 
-ifdef NOO
-	CXXFLAGS += -O0
-else 
+# CXX flags
+CXXSTD = -std=c++17
+
+CXXFLAGS = $(CXXSTD) -MMD -MP
+CXXFLAGS += $(addprefix -I, $(INC_PATH))
+
+# Debug
+ifeq ($(MODE), debug)
+	CXXFLAGS += -ggdb -O0
+else
 	CXXFLAGS += -O2
 endif
 
-SRC_DIR = $(abspath ./src)
-SRCS ?= $(shell find $(SRC_DIR) -name "*.cpp")
+# Warning
+ifeq ($(WARN), all)
+	CXXFLAGS += -Wextra -Wall -Werror
+endif
 
-BUILD_DIR = $(abspath ./build)
-OBJ_DIR = $(BUILD_DIR)/obj_dir
-
-OBJDUMP = $(BUILD_DIR)/objdump.txt
-
-$(shell mkdir -p $(OBJ_DIR))
-
-OBJS = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(basename $(notdir $(SRCS)))))
-BIN = $(BUILD_DIR)/run
-
--include $(OBJS:.o=.d)
-
-run: $(BIN)
-	$<
-
-$(BIN): $(OBJS)
-	$(CC) $(CXXFLAGS) $^ -o $@
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) $(CXXFLAGS) -c -o $@ $<
-
-dump: $(BIN)
-	objdump $(DUMPFLAGS) $(BIN) > $(OBJDUMP)
+# Inlcude path
+INC_PATH = $(abspath ../include/)
 
 
-###############################################################################
+# Preview markdown
+readme_makedown_preview: README.html
+	xdg-open README.html
 
-.PHONY: run clean
+README.html: README.md
+	pandoc README.md -o README.html
+clean_README_html:
+	rm README.html
 
-clean: 
-	rm -rf $(BUILD_DIR)
+.PHONY: readme_makedown_preview clean_README_html
+
