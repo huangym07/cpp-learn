@@ -1,0 +1,3 @@
+BasedOnStyle: LLVM
+IndentWidth: 4            # 缩进宽度为4
+UseTab: Never             # 使用空格而非Tab
