@@ -10,6 +10,9 @@ gcc 13.2.0
 
 StrVec 是对 std::vector\<std::string\> 的简化仿写
 
+需求、结构、类的实现见：【腾讯文档】StrVec 类
+https://docs.qq.com/mind/DZUFPb1dNdVNyRmF6
+
 include/StrVecLib: StrVec 头文件
 src/StrVecLib: StrVec 的实现代码以及 CMakeLists.txt  
 
